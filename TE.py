@@ -4,16 +4,28 @@ from PIL import Image
 import cv2
 import numpy as  np
 # 定义标签文件夹和图像文件夹的路径
-labels_folder = "/home/ubuntu/DataSet/FULL_middle/test/labels"
-images_folder = "/home/ubuntu/GITHUG/ultralytics/runs/detect/predict5"
+labels_folder = "/home/ubuntu/DataSet/FULL_middle_png_add_test/test/labels"
+images_folder = "/home/ubuntu/b"
 output_folder = os.path.join(images_folder,"labeled")
-os.mkdir(output_folder)
+try:
+    os.mkdir(output_folder)
+except:
+    print("文件夹已存在")
 # 获取标签文件列表
 label_files = os.listdir(labels_folder)
 
 # 循环处理每个标签文件
 for label_file in label_files:
     # 构建对应的图像文件路径
+    x=os.path.join(images_folder, os.path.splitext(label_file)[0] + ".png")
+    y=os.path.join(images_folder, os.path.splitext(label_file)[0] + ".tif")
+    a = os.path.exists(y)
+    b=os.path.exists(x)
+    if(os.path.exists(os.path.join(images_folder, os.path.splitext(label_file)[0] + ".tif") or
+                      os.path.exists(os.path.join(images_folder, os.path.splitext(label_file)[0] + ".png")))):
+        pass
+    else:
+        continue
     try:
         image_file = os.path.join(images_folder, os.path.splitext(label_file)[0] + ".tif")
 
@@ -30,8 +42,10 @@ for label_file in label_files:
         image = cv2.imread(image_file)
 
     image_array = np.array(image)
-
+    if image_array.all()==None:
+        continue
     # 读取标签文件
+    print(label_file)
     with open(os.path.join(labels_folder, label_file), 'r') as f:
         lines = f.readlines()
 
@@ -48,7 +62,7 @@ for label_file in label_files:
         y2 = int((y + h / 2) * image_array.shape[0])
 
         # 在图像上画红色框
-        cv2.rectangle(image_array, (x1, y1), (x2, y2), (0, 255, 0), 2)  # 设置颜色为红色
+        cv2.rectangle(image_array, (x1, y1), (x2, y2), (0, 0, 255), 2)  # 设置颜色为红色
         # cv2.putText(image_array, f"{confidence:.2f}", (x1, y2 + 20), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2,
         #             cv2.LINE_AA)
     # 转换图像为灰度

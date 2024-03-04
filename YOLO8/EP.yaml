@@ -1,0 +1,6 @@
+train: /home/ubuntu/DataSet/EnlargedPicture/train/images
+val: /home/ubuntu/DataSet/EnlargedPicture/test/images
+test: /home/ubuntu/DataSet/EnlargedPicture/test/images
+
+nc: 1
+names: ['solder ball']
